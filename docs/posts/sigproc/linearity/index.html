@@ -37,7 +37,7 @@
 
     
 
-    <meta name="generator" content="Hugo 0.49.2" />
+    <meta name="generator" content="Hugo 0.50" />
 
     <script type="text/javascript" async
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
@@ -106,7 +106,7 @@ MathJax.Hub.Config({
         
       </div>
       <div>
-        <p>The list of engineering ideas centered on linearity is endless: linear regression, linear time-invariant (LTI) filter, linear dynamical system, linearization etc. Most of these ideas are introduced with a cursorsy view of the significance of linearity. In this post, I want to flip the perspective and make linearity the central theme and elucidate how other ideas depend on it.</p>
+        <p>The list of engineering ideas centered on linearity is endless: linear regression, linear time-invariant (LTI) filter, linear dynamical system, linearization, support vector machines, circuit theory/network analysis etc. Most of these ideas are introduced with a cursorsy view of the significance of linearity. In this post, I want to flip the perspective and make linearity the central theme and elucidate how other ideas depend on it.</p>
 
 <p>We probably all think straight line when we think of the word linear. In fact, my first strong association of the word is from physics: the recti<em>linear</em> propagation of light i.e light travels in a straight line. But what do straight lines have to do with all those listed ideas? Can we define linearity in a more generalized manner? We’ll start with elementary math and build up a definition that can be applied whenever we encounter the word linear. Ultimately, we'll use the new perspective of linearity in understanding a popular linear operator: the Fourier transform. My goal in doing this exercise was to replace the straight line mental picture with a more generalized notion of linearity.</p>
 
@@ -125,7 +125,7 @@ MathJax.Hub.Config({
 <p><figure><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Linear_Function_Graph.svg/800px-Linear_Function_Graph.svg.png" alt="linear_equation"></figure></p>
 
 <ul>
-<li>The generalization of the solution set for $n &gt; 2$ is a hyperplane (line in 2D plane, <a href="https://www.wolframalpha.com/input/?i=x%2By%2Bz+%3D+0">a plane in 3D</a>, a cube in 4D etc.). Hyperplanes are generalizations of straight lines in higher dimesional spaces.</li>
+<li>The generalization of the solution set for $n &gt; 2$ is a hyperplane (line in 2D plane, <a href="https://www.wolframalpha.com/input/?i=x%2By%2Bz+%3D+0">a plane in 3D</a>, a cube in 4D etc.). Hyperplanes are generalizations of straight lines in higher dimensional spaces.</li>
 </ul>
 
 <h3 id="linear-function-defining-functions-using-equations">Linear function: Defining functions using equations</h3>
@@ -150,7 +150,7 @@ MathJax.Hub.Config({
 
 <h3 id="system-of-equations-dealing-with-many-variables">System of equations: Dealing with many variables</h3>
 
-<p>Algebra provides methods to solve equations and linear algebra to solve linear equations like the one in above. It enables the solving of multiple equations i.e a system of equations:</p>
+<p>Algebra provides methods to solve equations and linear algebra to solve linear equations like the one above. It enables the solving of multiple equations i.e a system of equations:</p>
 
 <p>${y_{1} = a_{11}x_{1} + \cdots +a_{1n}x_{n} + b_1}$</p>
 
@@ -180,11 +180,13 @@ MathJax.Hub.Config({
 
 <p>Now's the time for the definition of linearity we've been building up to. A map/transformation/operation is linear if the superposition property holds:</p>
 
-<p>$\mathbb{F}(\alpha x_1 + \beta x_2) = \alpha \mathbb{F}(x_1) + \beta \mathbb{F}(x_2)$</p>
+<p>$\mathbb{L}(\alpha x_1 + \beta x_2) = \alpha \mathbb{L}(x_1) + \beta \mathbb{L}(x_2)$</p>
 
-<p>The equation tells us that if we take two vectors <span  class="math">\(x_1\)</span> and <span  class="math">\(x_2\)</span>, scale them with <span  class="math">\(\alpha\)</span> and <span  class="math">\(\beta\)</span> and pass the result through the linear operator then the output is the same as if we had passed each output separately, scaled them and then added the two results to produce the output. This is a strong constraint; it means that the operator acts on each input independently.</p>
+<p>The equation tells us that if we take two vectors <span  class="math">\(x_1\)</span> and <span  class="math">\(x_2\)</span>, scale them with <span  class="math">\(\alpha\)</span> and <span  class="math">\(\beta\)</span> and pass the result through the linear operator then the output is the same as if we had scaled each input and passed them through the operator separately and then added the two results to produce the output. This is a strong constraint; it means that the operator acts on each input independently.</p>
 
 <p>In the system of equations picture of <span  class="math">\(y = Ax\)</span>, matrix A is a linear operator because it satisfies this superposition property. In fact, every linear function/transformation can be written as a matrix.</p>
+
+<p>Note that the earlier definition presented for a linear function (eg. ${f(x) = (-a_{2}/a_{1})x-b}$) does not satisfy the superposition property. It does not preserve the origin after the transformation. The earlier definition is technically &quot;linear affine&quot;. The <span  class="math">\(y = Ax\)</span> is the linear part; the <span  class="math">\(b\)</span> term adds a translation like in the figure with the straight lines above. The term linear is often confused with affine (especially in calculus) so know that there is a difference. Henceforth, we'll use the definition for linear to mean &quot;satisfying the superposition principle&quot;.</p>
 
 <p>Before we start applying this definition of linearity we need to paint a better picture for what a vector is.</p>
 
@@ -224,11 +226,11 @@ MathJax.Hub.Config({
 
 <p>The dot product is a very useful linear operation that helps us intuit geometric notions of lengths and angles between vectors. It takes two vectors from a vector space and outputs a real number. The most common notation for the operation is <span  class="math">\(\langle a, b \rangle = a \cdot b = a^T b = \sum_{i=1}^{n} a_{i} b_{i}\)</span>. It is computed by summing up the element wise products of the two vectors.</p>
 
-<p>Length of a vector <span  class="math">\(v\)</span> is defined by the dot product of <span  class="math">\(v\)</span> with itself <span  class="math">\(|a| = \sqrt{\langle a, a \rangle}\)</span></p>
+<p>Length of a vector <span  class="math">\(a\)</span> is defined by the dot product of <span  class="math">\(a\)</span> with itself <span  class="math">\(|a| = \sqrt{\langle a, a \rangle}\)</span></p>
 
 <p>The angle between two vectors <span  class="math">\(a\)</span> and <span  class="math">\(b\)</span> can also be defined by the dot product <span  class="math">\(\langle a, b \rangle = |a| |b| cos(\theta)\)</span> or <span  class="math">\(\theta = \cos^{-1} (\frac{\langle a, b \rangle}{|a| |b|})\)</span>.</p>
 
-<p>Dot product also gives us the notion of orthogonality. When the dot product of two vectors is <span  class="math">\(0\)</span>, the two vectors are said to be orthogonal. i.e <span  class="math">\(\langle a, b \rangle = |a| |b| cos(\theta) = 0\)</span>, <span  class="math">\(cos(\theta) = 0\)</span> or <span  class="math">\(\theta = \pi/2 = 90^{\circ}\)</span>. When the dot product is 1, the vectors are most &quot;similar&quot; and when the vectors are orthogonal they are least &quot;similar&quot;.</p>
+<p>Dot product also gives us the notion of orthogonality. When the dot product of two vectors is <span  class="math">\(0\)</span>, the two vectors are said to be orthogonal. i.e <span  class="math">\(\langle a, b \rangle = |a| |b| cos(\theta) = 0\)</span>, <span  class="math">\(cos(\theta) = 0\)</span> or <span  class="math">\(\theta = \pi/2 = 90^{\circ}\)</span>. When the dot product is $|a| |b|$, the vectors are most &quot;similar&quot; or &quot;co-directional&quot; and when the vectors are orthogonal they are &quot;perpendicular&quot; or least &quot;similar&quot;.</p>
 
 <p>The dot product we have defined so far is a specific example of an inner product (for n-dimensional Euclidean spaces). Just as we did before in abstracting away vector spaces using axioms, we can do the same for inner products. For an operation to qualify as an inner product, it needs to satisfy three axioms listed <a href="https://en.wikipedia.org/wiki/Inner_product_space#Definition">here</a>. One of the axioms enforces the linearity constraint.</p>
 

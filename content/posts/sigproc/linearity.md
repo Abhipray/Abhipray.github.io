@@ -4,7 +4,7 @@ title = "On linearity: straight lines, linear operators & the Fourier transform"
 markup = "mmark"
 +++
  
- The list of engineering ideas centered on linearity is endless: linear regression, linear time-invariant (LTI) filter, linear dynamical system, linearization etc. Most of these ideas are introduced with a cursorsy view of the significance of linearity. In this post, I want to flip the perspective and make linearity the central theme and elucidate how other ideas depend on it.
+ The list of engineering ideas centered on linearity is endless: linear regression, linear time-invariant (LTI) filter, linear dynamical system, linearization, support vector machines, circuit theory/network analysis etc. Most of these ideas are introduced with a cursorsy view of the significance of linearity. In this post, I want to flip the perspective and make linearity the central theme and elucidate how other ideas depend on it.
  
  We probably all think straight line when we think of the word linear. In fact, my first strong association of the word is from physics: the recti*linear* propagation of light i.e light travels in a straight line. But what do straight lines have to do with all those listed ideas? Can we define linearity in a more generalized manner? We’ll start with elementary math and build up a definition that can be applied whenever we encounter the word linear. Ultimately, we'll use the new perspective of linearity in understanding a popular linear operator: the Fourier transform. My goal in doing this exercise was to replace the straight line mental picture with a more generalized notion of linearity.
 
@@ -22,7 +22,7 @@ ${\displaystyle a_{1}x_{1}+\cdots +a_{n}x_{n}+b=0}$
 ![linear_equation](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Linear_Function_Graph.svg/800px-Linear_Function_Graph.svg.png)
 
 
-- The generalization of the solution set for $n > 2$ is a hyperplane (line in 2D plane, [a plane in 3D](https://www.wolframalpha.com/input/?i=x%2By%2Bz+%3D+0), a cube in 4D etc.). Hyperplanes are generalizations of straight lines in higher dimesional spaces.
+- The generalization of the solution set for $n > 2$ is a hyperplane (line in 2D plane, [a plane in 3D](https://www.wolframalpha.com/input/?i=x%2By%2Bz+%3D+0), a cube in 4D etc.). Hyperplanes are generalizations of straight lines in higher dimensional spaces.
 
 ### Linear function: Defining functions using equations
 
@@ -46,7 +46,7 @@ This gets a little messy so we stack up $x_1...x_n$ into a list of numbers and c
 
 ### System of equations: Dealing with many variables
 
-Algebra provides methods to solve equations and linear algebra to solve linear equations like the one in above. It enables the solving of multiple equations i.e a system of equations:
+Algebra provides methods to solve equations and linear algebra to solve linear equations like the one above. It enables the solving of multiple equations i.e a system of equations:
 
 ${y_{1} = a_{11}x_{1} + \cdots +a_{1n}x_{n} + b_1}$ 
 
@@ -76,11 +76,13 @@ An operation/transformation/map $$\mathbb{L}(x)$$ takes in an input vector $$x$$
 
 Now's the time for the definition of linearity we've been building up to. A map/transformation/operation is linear if the superposition property holds:
 
-$\mathbb{F}(\alpha x_1 + \beta x_2) = \alpha \mathbb{F}(x_1) + \beta \mathbb{F}(x_2)$
+$\mathbb{L}(\alpha x_1 + \beta x_2) = \alpha \mathbb{L}(x_1) + \beta \mathbb{L}(x_2)$
 
-The equation tells us that if we take two vectors $$x_1$$ and $$x_2$$, scale them with $$\alpha$$ and $$\beta$$ and pass the result through the linear operator then the output is the same as if we had passed each output separately, scaled them and then added the two results to produce the output. This is a strong constraint; it means that the operator acts on each input independently.
+The equation tells us that if we take two vectors $$x_1$$ and $$x_2$$, scale them with $$\alpha$$ and $$\beta$$ and pass the result through the linear operator then the output is the same as if we had scaled each input and passed them through the operator separately and then added the two results to produce the output. This is a strong constraint; it means that the operator acts on each input independently.
 
 In the system of equations picture of $$y = Ax$$, matrix A is a linear operator because it satisfies this superposition property. In fact, every linear function/transformation can be written as a matrix. 
+
+Note that the earlier definition presented for a linear function (eg. ${f(x) = (-a_{2}/a_{1})x-b}$) does not satisfy the superposition property. It does not preserve the origin after the transformation. The earlier definition is technically "linear affine". The $$y = Ax$$ is the linear part; the $$b$$ term adds a translation like in the figure with the straight lines above. The term linear is often confused with affine (especially in calculus) so know that there is a difference. Henceforth, we'll use the definition for linear to mean "satisfying the superposition principle".
 
 Before we start applying this definition of linearity we need to paint a better picture for what a vector is. 
 
@@ -118,11 +120,11 @@ The dimension of a vector space is defined by the number of basis vectors. The e
 
 The dot product is a very useful linear operation that helps us intuit geometric notions of lengths and angles between vectors. It takes two vectors from a vector space and outputs a real number. The most common notation for the operation is $$\langle a, b \rangle = a \cdot b = a^T b = \sum_{i=1}^{n} a_{i} b_{i}$$. It is computed by summing up the element wise products of the two vectors.
 
-Length of a vector $$v$$ is defined by the dot product of $$v$$ with itself $$|a| = \sqrt{\langle a, a \rangle}$$
+Length of a vector $$a$$ is defined by the dot product of $$a$$ with itself $$|a| = \sqrt{\langle a, a \rangle}$$
 
 The angle between two vectors $$a$$ and $$b$$ can also be defined by the dot product $$\langle a, b \rangle = |a| |b| cos(\theta)$$ or $$\theta = \cos^{-1} (\frac{\langle a, b \rangle}{|a| |b|})$$. 
 
-Dot product also gives us the notion of orthogonality. When the dot product of two vectors is $$0$$, the two vectors are said to be orthogonal. i.e $$\langle a, b \rangle = |a| |b| cos(\theta) = 0$$, $$cos(\theta) = 0$$ or $$\theta = \pi/2 = 90^{\circ}$$. When the dot product is 1, the vectors are most "similar" and when the vectors are orthogonal they are least "similar".
+Dot product also gives us the notion of orthogonality. When the dot product of two vectors is $$0$$, the two vectors are said to be orthogonal. i.e $$\langle a, b \rangle = |a| |b| cos(\theta) = 0$$, $$cos(\theta) = 0$$ or $$\theta = \pi/2 = 90^{\circ}$$. When the dot product is $|a| |b|$, the vectors are most "similar" or "co-directional" and when the vectors are orthogonal they are "perpendicular" or least "similar".
 
 The dot product we have defined so far is a specific example of an inner product (for n-dimensional Euclidean spaces). Just as we did before in abstracting away vector spaces using axioms, we can do the same for inner products. For an operation to qualify as an inner product, it needs to satisfy three axioms listed [here](https://en.wikipedia.org/wiki/Inner_product_space#Definition). One of the axioms enforces the linearity constraint.
 
