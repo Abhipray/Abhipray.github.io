@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Abhipray Sahoo">
+    <meta name="description" content="Journal">
+    <meta name="keywords" content="audio, embedded systems, signal processing">
+
+    
+    <title>
+  Tactile Vision &amp; Gray code · embedded sigproc
+</title>
+
+    <link rel="canonical" href="https://abhipray.com/posts/sigproc/tactile_vision/">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Merriweather:300,700|Source+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="../../../css/coder.min.da5204b40ef8cbcb52b75a8cac5656a9cebc00a15e25c865a4b84a3c06b3ed82.css" integrity="sha256-2lIEtA74y8tSt1qMrFZWqc68AKFeJchlpLhKPAaz7YI=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://abhipray.com/css/custom.css">
+    
+
+    <link rel="icon" type="image/png" href="https://abhipray.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://abhipray.com/img/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.50" />
+
+    <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\\[','\\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    displayAlign: "center",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+  </head>
+
+  <body class="">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://abhipray.com/">
+      embedded sigproc
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="../../../posts/">Posts</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Tactile Vision &amp; Gray code</h1>
+        </div>
+        <div class="post-meta">
+          <span class="posted-on">
+            <i class="far fa-calendar"></i>
+            <time datetime='2019-05-13T00:00:00Z'>
+              May 13, 2019
+            </time>
+          </span>
+          <span class="reading-time">
+            <i class="far fa-clock"></i>
+            2 minutes read
+          </span>
+        </div>
+      </header>
+      <div>
+        
+      </div>
+      <div>
+        <h1 id="tactile-vision--gray-code">Tactile Vision &amp; Gray code</h1>
+
+<p>I took a break from my series on speech enhancement to work on a project for an Information Theory class. The project involved designing algorithms to translate images to vibration patterns felt on the chest. The work is summarized on the blog for the class here: <a href="https://theinformaticists.com/2019/03/22/tactile-vision1-0-seeing-the-world-through-vibrations/">https://theinformaticists.com/2019/03/22/tactile-vision1-0-seeing-the-world-through-vibrations/</a>. There are lots of other really cool projects out there so do check it out!</p>
+
+<p>As part of the project, I implemented some algorithms to generate <a href="https://en.wikipedia.org/wiki/Gray_code">Gray codes</a>. Gray codes are an ordering a binary code that enforces a hamming distance(number of positions where two strings are different) of one for consecutive bitstrings.</p>
+
+<p>The algorithm described on <a href="https://en.wikipedia.org/wiki/Gray_code#n-ary_Gray_code">Wikipedia</a> results in the following codes. The left column is the gray code bitstring and the right number is the decimal representation.</p>
+
+<p><figure><img src="gray_wiki.png" alt="img"></figure></p>
+
+<p>As you can see if you pay attention to the rightmost character of the Gray code, the numbers wrap around ([0,1,2,2,0,1,2..]. Our requirement was to generate a ternary Gray code that did not wrap around for consecutive bitstrings (i.e we wanted the count to alternate). This was satisfied by an algorithm described in a paper titled &quot;Generalized Gray Codes with Applications&quot;, by Guan (1998).</p>
+
+<p>Here's Python code for it:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4">def gray_code_guan(N, K):
+    n = [0] * (K+1)
+    g = [0] * (K+1)
+    u = [0] * (K+1)
+    
+    for i in range(K+1):
+        g[i] = 0
+        u[i] = 1
+        n[i] = N
+    out = []
+    while g[K] == 0:
+        digits = []
+        for j in range(K-1, -1, -1):
+            digits.append(g[j])
+        out.append(digits)
+        i = 0
+        k = g[0] + u[0]
+        while ((k&gt;=n[i]) or (k &lt; 0)):
+            u[i] = -u[i]
+            i += 1
+            k = g[i] + u[i]
+        g[i] = k
+    return out</pre></div>
+<p>Generated ternary Gray code:</p>
+
+<p><figure><img src="gray_guan.png" alt="img"></figure></p>
+
+      </div>
+
+      <footer>
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "embedded-sigproc" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+     © 2019
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-127997927-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </body>
+
+</html>
