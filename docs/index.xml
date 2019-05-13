@@ -6,10 +6,20 @@
     <description>Recent content on embedded sigproc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://abhipray.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Tactile Vision &amp; Gray code</title>
+      <link>https://abhipray.com/posts/sigproc/tactile_vision/</link>
+      <pubDate>Mon, 13 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://abhipray.com/posts/sigproc/tactile_vision/</guid>
+      <description>Tactile Vision &amp;amp; Gray code I took a break from my series on speech enhancement to work on a project for an Information Theory class. The project involved designing algorithms to translate images to vibration patterns felt on the chest. The work is summarized on the blog for the class here: https://theinformaticists.com/2019/03/22/tactile-vision1-0-seeing-the-world-through-vibrations/. There are lots of other really cool projects out there so do check it out!
+As part of the project, I implemented some algorithms to generate Gray codes.</description>
+    </item>
     
     <item>
       <title>Classical Speech Enhancement Part 1: Spectral subtraction</title>
