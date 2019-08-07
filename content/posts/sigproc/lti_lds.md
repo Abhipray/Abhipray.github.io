@@ -64,7 +64,7 @@ It is also helpful to decompose those polynomials in the numerator and denominat
 
 $H(z) = \frac{(z-p_0)(z-p_1)...(z-p_m)} {(z-q_0)(z-q_1)...(z-q_m)}$
 
-The roots of the numerator polynomial are called zeros because the transfer function is zero for those values. The roots of the denominator polynomial are called poles because the transfer function is infinitely large at those values. 
+The roots of the numerator polynomial are called zeros because the transfer function is zero for those values. The roots of the denominator polynomial are called poles because the transfer function is infinitely large at those values. For example, we can model the human vocal tract (mouth, lips) as an LTI system whose inputs are signals from the larynx/voice box. We can model it as having only poles; often times the vocal tract simply lets through only a handful of frequencies called resonance frequencies. A pair of complex-valued poles can describe a single resonance.
 
 In this quick crash course on signals and systems, we looked at both time-domain and frequency-domain characterizations of LTI systems. How do these concepts relate to Linear Dynamical Systems?
 
