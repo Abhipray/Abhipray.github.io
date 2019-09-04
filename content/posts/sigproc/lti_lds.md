@@ -68,3 +68,15 @@ The roots of the numerator polynomial are called zeros because the transfer func
 
 In this quick crash course on signals and systems, we looked at both time-domain and frequency-domain characterizations of LTI systems. How do these concepts relate to Linear Dynamical Systems?
 
+Linear Dynamical Systems (LDS)
+
+The LDS perspective of an LTI system introduces the notion of a state-space. A system is said to be in a given state which summarizes the effects of past inputs on the current output. The state is mathematically a vector $x(k)$. If the current input is $u(k)$ and output is $y(k)$, then the full system is described with these two state-equations:
+
+$x(k+1) = Ax(k) + Bu(k)$
+
+$y(k) = Cx(k) + Du(k)$
+
+Matrix $A$ describes the dynamics of how the state vector evolves over time. $B$ is the input matrix that describes how to absorb the information in the current input into the state. $C$ is the output matrix explaining the relation between the current state of the system and the output. $D$ is the feedthrough matrix. 
+
+Immediately, we see that this description allows us to work with multi-dimensional inputs and outputs (MIMO) eg. if our system is processing videos, each frame of video could be an input vector at time $k$. In our description of LTI systems, we constrained ourselves to single-input single-output (SISO) systems, so we will stick to SISO. 
+
