@@ -1,13 +1,13 @@
 # Linear Time-Invariant Systems and Linear Dynamical Systems (LTI vs LDS)
 
-It is often easier to understand a concept if it can be connected to some other familiar concept. Like most electrical engineers, I was introduced to Linear Time-Invariant systems/filters in the framework of analyzing electrical signals and circuits. I recently took a class on linear dynamical systems which generalize the notion of LTI systems. In this post, I want to make the connection between LTI systems and Linear Dynamical Systems (LDS). I will focus on only discrete-time systems.
+It is often easier to understand a concept if it can be connected to some other familiar concept. Like most electrical engineers, I was introduced to Linear Time-Invariant systems/filters in the framework of analyzing electrical signals and circuits. I recently took a class on linear dynamical systems which generalizes the notion of LTI systems using state-space. In this set of notes, I want to make the connection between LTI systems and Linear Dynamical Systems (LDS). I will focus on only discrete-time systems.
 
 ## LTI System background
 
 ### Difference equation
-Given a sequence of numbers i.e a signal $u[n]$ indexed by $n$, we can define a system as an operation that produces an output $y[n]$ for every index $n$.  If the relation between $y[n]$ and $u[n]$ is linear (eg. weighted sum of $u[n]$ for different values of $n$) and that relation does not change with time, then we have an LTI system. For example, $y[n] = b_0u[n] +b_1x[n-1]$ is an LTI system that at each time step $n$ produces as output a weighted sum of the current value of the signal and the previous value of the signal $x[n-1]$. $b_0$ and $b_1$ are held constant making the system time-invariant. 
+Given a sequence of numbers i.e a signal $u[n]$ indexed by $n$, we can define a system as an operation that produces an output $y[n]$ for every index $n$.  If the relation between $y[n]$ and $u[n]$ is linear (weighted sum of $u[n]$ for different values of $n$) and that relation does not change with time, then we have an LTI system. For example, $y[n] = b_0u[n] +b_1x[n-1]$ is an LTI system that at each time step $n$ produces as output a weighted sum of the current value of the signal and the previous value of the signal $x[n-1]$. $b_0$ and $b_1$ are held constant making the system time-invariant. 
 
-Such a description of an LTI system is called a difference equation. The general form is $y[n] = b_0u[n]+b_1x[n-1]+...+b_x[n-k] + a_1y[n-1] +a_2y[n-2] +...+a_p[n-p]$. In this description, the output $y[n]$ is restricted to be causal: it only depends on past inputs and past outputs. We will limit our discussion to causal systems which are all physical systems. 
+Such a description of an LTI system is called a difference equation. The general form is $y[n] = b_0u[n]+b_1u[n-1]+...+b_ku[n-k] + a_1y[n-1] +a_2y[n-2] +...+a_p[n-p]$. In this description, the output $y[n]$ is restricted to be causal: it only depends on past inputs and past outputs. We will limit our discussion to causal systems which all physical systems are. 
 
 
 ### Impulse response
@@ -17,9 +17,9 @@ $y[n] = h[n] \circledast u[n] = \sum_{k=-\infty}^{+\infty}u[k]h[n-k]$
 
 This equation can be understood visually as: (1) flip the impulse response across the n=0 axis (y-axis) i.e h[-k] (2) slide h[-k] n times to the right effectively centering it at the value of n we are trying to compute the output for (3) perform the summation for different values of k. 
 
-If you are having a hard to time visualizing, you can also just compare this convolution equation to the difference equation i.e set the impulse response to be the coefficients of the current and past input samples. 
+If you are having a hard to time visualizing, you can also just compare this convolution equation to the equivalent difference equation: set the impulse response to be the coefficients of the current and past input samples. 
 
-What about systems that depend on past outputs (systems with feedback)? It turns out that the impulse response for systems with feedback is infinitely long. 
+What about systems that depend on past outputs (systems with feedback)? It turns out that the impulse response for systems with feedback is infinitely long. Such systems are best described in the difference equation or frequency domains (next section). Insert picture:
 
 Thus, we can characterize an LTI system using the impulse response and convolution operation. It's pretty cool to think about the fact that you can understand the full behaviour of an LTI system simply by stimulating it with an impulse. For example, a common application is in characterizing the acoustics of a room. We can model the room as an LTI system i.e something that scales and delays signals coming from a sound source and into a microphone; then we can play a loud impulse sound out of a speaker that lasts a short duration and record the impulse response with a microphone. Using the impulse response characterization of the room, we can now construct an inverse filter (an impulse response that when convolved with the room impulse response results in $1$) that counters the effects of the room. 
 
@@ -40,15 +40,15 @@ Try multiplying out the two polynomials to see the equivalence to convolution. T
 
  $X(z)={\mathcal {Z}}\{x[n]\}=\sum _{n=-\infty }^{\infty }x[n]z^{-n}$
 
-Notice that the variable in the polynomial is $z^{-1}$ . You can interpret the power of the variable as a delay in the time domain i.e $x[n-k] = x[n]z^{-k}$.
+$z$ in the equation is any complex number. Notice that the variable in the polynomial is $z^{-1}$ . You can interpret the power of the variable as a delay in the time domain i.e $x[n-k] = x[n]z^{-k}$.
 
-For a finite impulse response, we have
+For a finite impulse response (FIR), we have
 
 $h[n] = b_0, b_1...b_n \hspace{1cm} H(z) = {\mathcal {Z}}\{h[n]\} = b_0 + b_1z + b_2z^{-2}+...+b_nz^{-n}$
 
 The z-transform of the impulse response is called the transfer function. Why? Because it relates the input and output of the LTI system via a simple multiplication: $Y(z) = H(z)X(z)$. It answers how much and what parts of X(z) get transferred to the output.
 
-For systems with feedback that have infinitely long impulse responses, we turn back to the general difference equation:
+For systems with feedback that have infinitely long impulse responses (IIR), we turn back to the general difference equation:
 
 $y[n] = b_0u[n]+b_1x[n-1]+...+b_x[n-k] + a_1y[n-1] +a_2y[n-2] +...+a_p[n-p]$
 
@@ -58,7 +58,7 @@ $Y(z) = b_0U(z)+b_1U(z)z^{-1}+...+b_kU(z)z^{-k} + a_1Y(z)z^{-1} +a_2Y(z)z^{-2} +
 
 $H(z) = \frac{Y(z)}{U(z)} = \frac{b_0+b_1z^{-1}+...+b_kz^{-k}}{1 + a_1z^{-1} +a_2z^{-2} +...+a_pz^{-p}}$
 
-The z-transform is a generalization of the Fourier transform. If you plugin $z = e^{j\omega}$ into the polynomial, you end up with the Fourier transform. It gives you a frequency ($\omega$) domain picture of what your system is doing. Let's say you want to remove a certain set of sinusoids with really low frequencies (eg. airplane takeoff noise), you can construct an LTI system to process your audio files to suppress low frequency sounds.
+The z-transform is a generalization of the Fourier transform. If you plugin $z = e^{j\omega}$ into the polynomial, you end up with the Fourier transform. It gives you a frequency ($\omega$) domain picture of what your system is doing. Let's say you want to remove a certain set of sinusoids with really low frequencies like airplane takeoff audio noise in your vacation video recordings, you can construct an LTI system with a high-pass characteristic that lets only high frequencies pass and suppresses any low frequency sounds.
 
 It is also helpful to decompose those polynomials in the numerator and denominator further into their roots. 
 
@@ -68,15 +68,139 @@ The roots of the numerator polynomial are called zeros because the transfer func
 
 In this quick crash course on signals and systems, we looked at both time-domain and frequency-domain characterizations of LTI systems. How do these concepts relate to Linear Dynamical Systems?
 
-Linear Dynamical Systems (LDS)
+## Linear Dynamical Systems (LDS)
 
-The LDS perspective of an LTI system introduces the notion of a state-space. A system is said to be in a given state which summarizes the effects of past inputs on the current output. The state is mathematically a vector $x(k)$. If the current input is $u(k)$ and output is $y(k)$, then the full system is described with these two state-equations:
+Abstractly, a dynamical system models how a point in a geometrical space evolves over time. The point is also called the state. In a discrete-time linear system, the state can be defined as a vector $x(k)$ and its evolution by the following equation:
+
+$x(k+1) = Ax(k) + Bu(k)$
+
+Matrix $A$ describes the dynamics of how the state vector evolves over time. $B$ is the input matrix that describes how to absorb the information in the current input into the state. 
+
+We add another layer to the state-space: the output $y(k)$. The output of an LDS is computed as a function of the current state and the current input.
+
+$y(k) = Cx(k) + Du(k)$
+
+$C$ is the output matrix explaining the relation between the current state of the system and the output. $D$ is called the feedthrough matrix.
+
+Thus an LDS is described with these two state-equations:
 
 $x(k+1) = Ax(k) + Bu(k)$
 
 $y(k) = Cx(k) + Du(k)$
 
-Matrix $A$ describes the dynamics of how the state vector evolves over time. $B$ is the input matrix that describes how to absorb the information in the current input into the state. $C$ is the output matrix explaining the relation between the current state of the system and the output. $D$ is the feedthrough matrix. 
+In our description of LTI systems, we are constrained to single-input single-output (SISO) systems. With LDS, the description allows us to work with multi-dimensional inputs and outputs (MIMO). For example, if our system is processing videos, each frame of video could be an input vector $u(k)$ at time $k$. 
 
-Immediately, we see that this description allows us to work with multi-dimensional inputs and outputs (MIMO) eg. if our system is processing videos, each frame of video could be an input vector at time $k$. In our description of LTI systems, we constrained ourselves to single-input single-output (SISO) systems, so we will stick to SISO. 
+## LTI and LDS connection
+
+First, let us derive an FIR LTI system as an LDS system. FIR filter output is a weighted sum of the current input and the past inputs given by the difference equation:
+
+$y[n] = b_0u[n]+b_1u[n-1]+...+b_ku[n-k]$
+
+The "state" of an FIR system is its memory-- it is a vector that stores the last $N$ input samples where $N$ is the memory size/filter length/impulse reponse length. If you implement the above equation in a programming language like C, you would use a FIFO queue to maintain the state of the system. Think of the equation below as just that-- at every timestep, pop the last Nth value from the queue and push the current value on top.
+
+$$x(k) = \begin{bmatrix} u[k-1] \\ u[k-2] \\ \vdots \\ u[k-N] \end{bmatrix}$$
+
+The LDS state evolution equation is:
+
+$$x(k+1) = Ax(k) + Bu(k)$$
+
+$$A = \begin{bmatrix}  
+0 & 0 & 0 & 0 & \cdots \\
+1 & 0 & 0 & & \cdots \\
+0 & 1 & 0 & 0 & \cdots \\
+0 & 0 & 1 & 0 & \cdots \\
+\vdots &  \vdots &  \vdots &  \vdots & \ddots \\
+0 & 0 & 0 & 1 & 0
+\end{bmatrix}$$
+
+$$B = \begin{bmatrix}  
+1 \\
+0 \\
+0 \\
+\vdots
+\end{bmatrix}$$
+
+The dynamics matrix $A$ is simply shifting the elements in the state vector downwards by 1 like a FIFO queue and making room to absorb the current input $u[k]$. $B$ is selecting the input. 
+
+The output is simply:
+
+$$y(k) = Cx(k) + Du(k)$$
+
+$$C = \begin{bmatrix}   
+b_1 \\
+b_2 \\
+\vdots \\ 
+b_n
+\end{bmatrix}$$
+
+$$ D = b_0 $$
+
+For IIR systems, the general difference equation, as before, is given by:
+$y[n] = b_0u[n]+b_1x[n-1]+...+b_x[n-k] + a_1y[n-1] +a_2y[n-2] +...+a_p[n-p]$
+
+The transfer function is:
+
+$H(z) = \frac{Y(z)}{U(z)} = \frac{b_0+b_1z^{-1}+...+b_kz^{-k}}{1 + a_1z^{-1} +a_2z^{-2} +...+a_kz^{-k}}$
+
+To convert this to the state-space representation we can split the transfer function into a cascade as follows:
+
+$H(z) = \frac{Y(z)}{U(z)} = (b_0+b_1z^{-1}+...+b_kz^{-k}) (\frac{1}{1 + a_1z^{-1} +a_2z^{-2} +...+a_kz^{-k}})$
+
+We can make the second term of the product the state of the LDS. The state vector will then effectively keep memory of the past outputs and inputs. 
+
+$X(z) = (\frac{1}{1 + a_1z^{-1} +a_2z^{-2} +...+a_kz^{-k}})U(z)$
+
+$Y(z) = (b_0+b_1z^{-1}+...+b_kz^{-k})X(z)$
+
+If we turn the transfer function back to time-domain form, we can see the dynamics matrix pop out:
+
+$x[n] = u[n] - a_1x[n-1] - a_2x[n-2] \dots -a_kx[n-k]$
+
+In vector form,
+
+$$x(k+1) = Ax(k) + Bu(k)$$
+
+
+$$A = \begin{bmatrix}  
+-a_1 & -a_2 & \cdots & -a_{N-1} & -a_N \\
+1 & 0 & 0 & 0 & \cdots \\
+0 & 1 & 0 & 0 & \cdots \\
+0 & 0 & 1 & 0 & \cdots \\
+\vdots &  \vdots &  \vdots &  \vdots & \ddots \\
+0 & 0 & 0 & 1 & 0
+\end{bmatrix}$$
+
+
+$$B = \begin{bmatrix}  
+1 \\
+0 \\
+0 \\
+\vdots
+\end{bmatrix}$$
+
+To derive the output from the state vector and the current input, we first want to factorize out the $b_0$ term in the transfer function since that's our feedthrough, $D$ matrix.
+
+$H(z) = \frac{Y(z)}{U(z)} = \frac{b_0+b_1z^{-1}+...+b_kz^{-k}}{1 + a_1z^{-1} +a_2z^{-2} +...+a_kz^{-k}}$
+
+$H(z) = \frac{Y(z)}{U(z)} = b_0 + \frac{(b_1-b_0a_1)z^{-1}+(b_2-b_0a_2)z^{-2} + ...+(b_k-b_0a_k)z^{-k}}{1 + a_1z^{-1} +a_2z^{-2} +...+a_kz^{-k}}$
+
+
+Now, 
+
+$$y(k) = Cx(k) + Du(k)$$
+
+$$C = \begin{bmatrix}   
+(b_1-b_0a_1) \\
+(b_2-b_0a_2) \\
+\vdots \\ 
+(b_n-b_0a_n)
+\end{bmatrix}$$
+
+$$ D = b_0 $$
+
+
+
+
+
+
 
