@@ -25,7 +25,15 @@ An impulse is a signal $\delta[n]$ that is $1$ at $n=0$ and $0$ elsewhere. For s
 
 $$y[n] = h[n] \circledast u[n] = \sum_{k=-\infty}^{+\infty}u[k]h[n-k]$$
 
-This equation can be understood visually as: (1) flip the impulse response across the n=0 axis (y-axis) i.e h[-k] (2) slide h[-k] n times to the right effectively centering it at the value of n we are trying to compute the output for (3) perform the summation for different values of $k$. 
+This equation can be understood visually as: 
+
+(1) flip the impulse response across the n=0 axis (y-axis) i.e $h[{-k}]$ 
+
+(2) slide $h[{-k}]$ n times to the right effectively centering it at the value of n we are trying to compute the output for 
+
+(3) perform the summation for different values of $k$. 
+
+![convolution](https://hkn.illinois.edu/wiki/_media/convolve_visual.gif "Convolution between an impulse response and a signal")
 
 If you are having a hard to time visualizing, you can also just compare this convolution equation to the equivalent difference equation: set the impulse response to be the coefficients of the current and past input samples. 
 

@@ -6,10 +6,19 @@
     <description>Recent content in Posts on embedded sigproc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 13 May 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://abhipray.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Linear Time-Invariant Systems and Linear Dynamical Systems (LTI vs LDS)</title>
+      <link>https://abhipray.com/posts/sigproc/lti_lds/</link>
+      <pubDate>Sat, 07 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://abhipray.com/posts/sigproc/lti_lds/</guid>
+      <description>Suggested reading: On linearity It is often easier to understand a concept if it can be connected to some other familiar concept. Like most electrical engineers, I was introduced to Linear Time-Invariant systems/filters in the framework of analyzing electrical signals and circuits. I recently took a class on linear dynamical systems which generalizes the notion of LTI systems using state-space. In this set of notes, I want to make the connection between LTI systems and Linear Dynamical Systems (LDS).</description>
+    </item>
     
     <item>
       <title>Tactile Vision &amp; Gray code</title>
