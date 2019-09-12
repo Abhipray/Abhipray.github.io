@@ -1,6 +1,6 @@
 +++ 
 date = "2019-09-07"
-title = "Linear Time-Invariant Systems and Linear Dynamical Systems (LTI vs LDS)"
+title = "What is the state of a system? Linear Time-Invariant Systems (LTI) vs Linear Dynamical Systems (LDS)"
 markup = "mmark"
 +++
 
