@@ -6,10 +6,20 @@
     <description>Recent content on embedded sigproc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 07 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 03 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://abhipray.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Where do harmonics and harmonic distortion come from? </title>
+      <link>https://abhipray.com/posts/sigproc/harmonics/</link>
+      <pubDate>Fri, 03 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://abhipray.com/posts/sigproc/harmonics/</guid>
+      <description>Unless you&#39;re hard of hearing, you have heard harmonics before, if not of harmonics. They are found in many naturally occurring periodic phenomena like sounds coming out of vocal cords or a musical instrument. In this post, I present a simple argument/animation for why harmonics exist.
+For phenomena that repeat with some fundamental period $T$ or frequency $f=\frac{1}{T}$, harmonics are integer multiples of the fundamental frequency ($nf = n/T$). When you listen to a guitar playing a tone or a flute playing the same tone, say 440Hz, you hear the fundamental frequency as well as the harmonics (880Hz, 1320Hz, etc.</description>
+    </item>
     
     <item>
       <title>What is the state of a system? Linear Time-Invariant Systems (LTI) vs Linear Dynamical Systems (LDS)</title>
