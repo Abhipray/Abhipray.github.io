@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="Abhipray Sahoo">
+    <meta name="description" content="Journal">
+    <meta name="keywords" content="audio, embedded systems, signal processing">
+
+    
+    <title>
+  Where do harmonics and harmonic distortion come from?  · embedded sigproc
+</title>
+
+    <link rel="canonical" href="https://abhipray.com/posts/sigproc/harmonics/">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700|Merriweather:300,700|Source+Code+Pro:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="../../../css/coder.min.da5204b40ef8cbcb52b75a8cac5656a9cebc00a15e25c865a4b84a3c06b3ed82.css" integrity="sha256-2lIEtA74y8tSt1qMrFZWqc68AKFeJchlpLhKPAaz7YI=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+      <link rel="stylesheet" href="https://abhipray.com/css/custom.css">
+    
+
+    <link rel="icon" type="image/png" href="https://abhipray.com/img/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://abhipray.com/img/favicon-16x16.png" sizes="16x16">
+
+    
+
+    <meta name="generator" content="Hugo 0.50" />
+
+    <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\\[','\\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    displayAlign: "center",
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+  </head>
+
+  <body class="">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="https://abhipray.com/">
+      embedded sigproc
+    </a>
+    <input type="checkbox" id="menu-toggle" />
+    <label class="menu-button float-right" for="menu-toggle"><i class="fas fa-bars"></i></label>
+    <ul class="navigation-list">
+      
+        
+          <li class="navigation-item">
+            <a class="navigation-link" href="../../../posts/">Posts</a>
+          </li>
+        
+      
+      
+    </ul>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">Where do harmonics and harmonic distortion come from? </h1>
+        </div>
+        <div class="post-meta">
+          <span class="posted-on">
+            <i class="far fa-calendar"></i>
+            <time datetime='2020-04-03T00:00:00Z'>
+              April 3, 2020
+            </time>
+          </span>
+          <span class="reading-time">
+            <i class="far fa-clock"></i>
+            7 minutes read
+          </span>
+        </div>
+      </header>
+      <div>
+        
+      </div>
+      <div>
+        <p>Unless you're hard of hearing, you have heard harmonics before, if not <em>of</em> harmonics. They are found in many naturally occurring periodic phenomena like sounds coming out of vocal cords or a musical instrument. In this post, I present a simple argument/animation for why harmonics exist.</p>
+
+<p>For phenomena that repeat with some fundamental period $T$ or frequency $f=\frac{1}{T}$, harmonics are integer multiples of the fundamental frequency ($nf = n/T$). When you listen to a guitar playing a tone or a flute playing the same tone, say 440Hz, you hear the fundamental frequency as well as the harmonics (880Hz, 1320Hz, etc.) of the vibrations. Here is a microphone recording of my Ukulele's G string vibration. The plot represents how the air pressure fluctuates around the microphone; larger the string vibration amplitude, larger the amplitude on the plot.</p>
+
+<div markdown="0">
+<audio src="uke_g_string.wav" controls="controls" >
+Your browser does not support the audio element.
+</audio>
+</div>
+
+<p><figure><img src="uke_g4_waveplot.png" alt="image.png"></figure></p>
+
+<p>The waveform has a strong attack and a slow decay.</p>
+
+<p>The Ukulele plays a G4 note which is 391Hz. If we zoomed in to a small segment, we can see that the waveform is repeating every 1/391 seconds. The lines were drawn by finding the first peak and adding 1/391 to get the next peak. Notice how the waveform shape repeats quite perfectly.</p>
+
+<p><figure><img src="uke_g4_zoomed.png" alt="image.png"></figure></p>
+
+<p>Does it contain harmonics? Yes, if we plotted the Fourier transform, you can observe energies at integer multiples of the fundamental frequency. Notice below how the first 10 multiples of the fundamental 391Hz align quite well with the peaks of the magnitude of the fourier transform. The higher frequencies might be attributed to noise.</p>
+
+<p><figure><img src="uke_g4_periodogram.png" alt="image.png"></figure></p>
+
+<p>The relative intensities of the fundamental and harmonics are what tells you the two instruments are different. Different guitar strings or flute holes are tuned to cause the instrument to resonate at different fundamental tones. <strong>Now, where do these integer multiple harmonics come from?</strong> In high school physics, we learn that this is due to the fact that standing waves form on a guitar string or air inside a flute. The standing waves only form to have energy at the fundamental frequency and its harmonics.</p>
+
+<p>Next, a second context for harmonics. If we asked your computer speaker to generate a pure tone by giving the speaker as input a sine wave of a fixed frequency and then record that audio via a microphone, we again observe harmonics in the microphone recordings. We call these unwanted harmonics, distortion and measure the total harmonic distortion (THD) as the ratio of energy in all of the harmonics to the energy in the fundamental. The distortion could be coming from either the speaker or the microphone.</p>
+
+<p>It turns out that if a system like a loudspeaker is non-linear, it can generate these harmonics given some input. This is by definition, because a sine wave input into a linear time-invariant (LTI) system will only produce sine wave output of the same frequency as the input, with possibly different amplitude and phase. Thus, if there are harmonics, they must have been injected by a non-linearity in the system. What kind of non-linearities would generate harmonics and why integer multiples of the fundamental as opposed to arbitrary frequencies?</p>
+
+<p>Harmonic distortion from speakers and harmonics from musical instruments exist because of the same fundamental idea of how periodic functions behave. We will start by looking at graphs of behaviors of periodic functions and then discuss how they apply to the two contexts above.</p>
+
+<h2 id="anatomy-of-a-periodic-function">Anatomy of a periodic function</h2>
+
+<p>A function $u(t)$ is periodic if it repeats its values every $T$ period: $u(t+nT)=u(t)$. $u(t)$ is also periodic with periods $2T$, $3T$ etc. but we choose to refer to the fundamental period as $T$. We have complete knowledge of the function or signal $u(t)$ if we know its shape in the period $T$.</p>
+
+<h2 id="sums-of-periodic-functions">Sums of periodic functions</h2>
+
+<p>If we add two periodic functions $u(t)$ and $v(t)$ with periods $T_1$ and $T_2$, $u(t) + v(t)$, the sum is <em>generally</em> periodic. It is periodic if there are positive integers $a$ and $b$ that satisfy $aT_1 = bT_2 = r$. $r$ is a period of resultant sum but it's not the fundamental period. For example, if $T_1 = 5$ and $T_2=11$, then $a=11$ and $b=5$ satisfies the constraint with $r=55$. However, the fundamental period for the example is $1$.</p>
+
+<p>One situation where the sum of two periodic functions is not periodic is when $a$ and $b$ don't exist. For example, if $T_1=1$ and $T_2=\sqrt{2}$.</p>
+
+<h2 id="decomposing-a-periodic-function">Decomposing a periodic function</h2>
+
+<p>Given an arbitrary periodic function $u(t)$ such as the Ukulele plot,
+can we decompose $u(t)$ into a sum of simple periodic functions?</p>
+
+<p>From the previous section, we know that if we added up periodic functions (call them the basis functions), we would end up having a periodic function. Let's choose as our building blocks the sine function, $\sin(t)$. It has a period of $2\pi$. Alternatively, $\sin(2\pi t)$ has period 1 because $\sin(2\pi (t+1)) = \sin(2\pi t+ 2\pi) = \sin(2\pi t)$. Generally, $\sin(\frac{2\pi t}{T})$ is periodic with period T. Decompose $u(t)$ as a summation of k sinusoids with periods $T_k$ and phases $\phi_k$:</p>
+
+<p>$u(t) = \sum{c_k sin(2\pi t/ T_k + \phi_k)}$</p>
+
+<p>How do we choose the periods $T_k$ of these basis periodic functions so that their effective period is equal to a given $T$?</p>
+
+<p>The answer is the punchline. First, the period of a basis function cannot be greater than T, otherwise the sum would be periodic with at least period T. The sum's period is going to only repeat itself after the longest period among its basis functions is complete. Second, the only basis functions that would be periodic with $T$ are those that have period either $T$ or an integer divisor of $T$, $T/k$ called the harmonic. To see this, here is a sine wave with period $1$. On top of it is an animation of sine waves with all the possible periods starting at $1$ and going till the 5th harmonic ($k=5$). Observe which functions are periodic with period T. The sine wave turns red at these points. Feel free to move the animation time slider back and forth and pause around these points.</p>
+
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="//www.youtube.com/embed/3GxVinjOce4" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
+
+<p>So this is where harmonics come from. If you have a periodic signal with a fundamental frequency $f_0 = 1/T$, then it can only have contributions from basis functions that have harmonic frequencies $f_1=2/T, f_2=3/T...$.</p>
+
+<p>Such a decomposition of a periodic function is the <a href="https://en.wikipedia.org/wiki/Fourier_series">Fourier series</a>.</p>
+
+<h1 id="systems-and-harmonics">Systems and harmonics</h1>
+
+<p>What about the loudspeaker situation? Why did that produce harmonics when we asked it to play out a pure tone? The imperfections in the sound reproduction/capture process introduced some shape distortion but at least it preserved the pure tone period. For example, it might have clipped if the input signal was too loud leading to a signal that looks like this:</p>
+
+<p><figure><img src="clipped_sine.png" alt="image.png"></figure></p>
+
+<p>The Fourier transform for this signal looks like this:</p>
+
+<p><figure><img src="clipped_sine_fft.png" alt="image.png"></figure></p>
+
+<p>Clearly visible are the harmonics. Because the &quot;non-linearities&quot; preserved the fundamental frequency but changed the waveform shape, energy appears in integer multiples.</p>
+
+<p>Of course, there can also be non-linear systems that will alter the fundamental frequency itself. Interestingly, if $T$ is the period of function $u(t)$ and $H$ is a system/function acting on it, then $H(u(t))$ will also have a period $T$ but the fundamental period could be smaller. A simple non-linear operation that would do that is the square operator:</p>
+
+<p><figure><img src="squared_sine.png" alt="image.png"></figure></p>
+
+<p>Notice how now the average of the signal is non-zero. This shows up as energy at 0 frequency in the frequency plot below.</p>
+
+<p><figure><img src="squared_sine_fft.png" alt="image.png"></figure></p>
+
+<p>The fundamental frequency is now twice what it was since as you can see from the time domain plot, the wave shape repeats with half the period as before.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>We looked at how harmonics show up when have periodic phenomena with some fundamental frequency $f_0$. Their existence was explained through a simple argument: only integer multiples of $f_0$ have period corresponding to $1/f_0$. If a complex periodic function is to be broken down into a sum of basis functions, those functions have to obey this constraint of being harmonics so that the resultant summation has the same period as the original signal.</p>
+
+      </div>
+
+      <footer>
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "embedded-sigproc" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    
+     © 2020
+    
+       · 
+      Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-127997927-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+  </body>
+
+</html>
