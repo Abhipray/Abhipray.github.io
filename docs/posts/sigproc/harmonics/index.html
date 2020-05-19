@@ -142,9 +142,11 @@ Your browser does not support the audio element.
 
 <h2 id="sums-of-periodic-functions">Sums of periodic functions</h2>
 
-<p>If we add two periodic functions $u(t)$ and $v(t)$ with periods $T_1$ and $T_2$, $u(t) + v(t)$, the sum is <em>generally</em> periodic. It is periodic if there are positive integers $a$ and $b$ that satisfy $aT_1 = bT_2 = r$. $r$ is a period of resultant sum but it's not the fundamental period. For example, if $T_1 = 5$ and $T_2=11$, then $a=11$ and $b=5$ satisfies the constraint with $r=55$. However, the fundamental period for the example is $1$.</p>
+<p>If we add two periodic functions $u(t)$ and $v(t)$ with periods $T_1$ and $T_2$, $u(t) + v(t)$, the sum is <em>generally</em> periodic. It is periodic if there are positive integers $a$ and $b$ that satisfy $aT_1 = bT_2 = r = \text{LCM}(T_1, T_2)$. $r$ is a period of resultant sum but it's not always the fundamental period. For example, $sin(2\pi x)$ and $-sin(2\pi x)$ are both periodic with period 1 but their sum is 0 and had no fundamental period.</p>
 
 <p>One situation where the sum of two periodic functions is not periodic is when $a$ and $b$ don't exist. For example, if $T_1=1$ and $T_2=\sqrt{2}$.</p>
+
+<p>For engineering purposes, we can say that the sum of periodic functions is periodic.</p>
 
 <h2 id="decomposing-a-periodic-function">Decomposing a periodic function</h2>
 
