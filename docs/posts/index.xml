@@ -6,10 +6,20 @@
     <description>Recent content in Posts on embedded sigproc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 03 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 31 Aug 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://abhipray.com/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>876 days journey to becoming a Master of Electrical Engineering</title>
+      <link>https://abhipray.com/posts/sigproc/ee_masters/</link>
+      <pubDate>Mon, 31 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://abhipray.com/posts/sigproc/ee_masters/</guid>
+      <description>Last month I gave my last exam towards an MS in Electrical Engineering at Stanford. For two and a half years now, I took at least one course every quarter. Every course taught me something new. Most gave me the opportunity to work on a project. Here is a brief summary of topics I studied and more interestingly, what I did with each topic.
+1. Statistical signal processing (Tsachy Wiessman) I learned about random signals and systems, a new layer of abstraction for me (on top of the familiar deterministic signals and systems theory).</description>
+    </item>
     
     <item>
       <title>Where do harmonics and harmonic distortion come from? </title>

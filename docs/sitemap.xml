@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://abhipray.com/posts/sigproc/ee_masters/</loc>
+    <lastmod>2020-08-31T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://abhipray.com/posts/sigproc/harmonics/</loc>
     <lastmod>2020-04-03T00:00:00+00:00</lastmod>
   </url>
@@ -39,7 +44,7 @@
   
   <url>
     <loc>https://abhipray.com/posts/</loc>
-    <lastmod>2020-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -50,7 +55,7 @@
   
   <url>
     <loc>https://abhipray.com/</loc>
-    <lastmod>2020-04-03T00:00:00+00:00</lastmod>
+    <lastmod>2020-08-31T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
